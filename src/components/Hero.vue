@@ -28,109 +28,107 @@
         />
       </div>
 
-      <h1 class="special-font hero-heading absolute bottom-5 right-5 z-40 text-blue-75">
-        骑士团长
-      </h1>
-
       <div class="absolute left-0 top-0 z-40 size-full">
-        <div class="mt-24 px-5 sm:px-10">
-          <div class="max-w-48">
-          <h1 class="special-font hero-heading text-blue-100">
-            你好
-          </h1>
+        <div
+          class="flex flex-col items-start justify-between h-full px-5 sm:px-10 py-10"
+        >
+          <div class="mt-24 max-w-lg">
+            <h1 class="special-font hero-heading text-blue-100">
+              你好，<br />骑士团长
+            </h1>
 
-          <p class="mb-5 font-robert-regular text-blue-100 text-left">
-            每个人都有属于自己的一片森林，<br />迷失的人迷失了，相逢的人会再相逢。
-          </p>
-        </div>
+            <p
+              class="mb-5 font-robert-regular text-blue-100 text-left max-w-64"
+            >
+              每个人都有属于自己的一片森林，<br />迷失的人迷失了，相逢的人会再相逢。
+            </p>
+          </div>
 
-          <Button
-            id="watch-trailer"
-            title="窥视内心"
-            container-class="flex justify-center items-center"
-            @click="handleHeartClick"
-          />
+          <div class="mb-10">
+            <Button
+              id="watch-trailer"
+              title="窥视内心"
+              container-class="flex justify-center items-center"
+              @click="handleHeartClick"
+            />
+          </div>
         </div>
       </div>
     </div>
-
-    <h1 class="special-font hero-heading absolute bottom-5 right-5 text-black">
-      骑士团长
-    </h1>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/all'
-import Button from './Button.vue'
+import { ref, watch, onMounted } from "vue";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+import Button from "./Button.vue";
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger);
 
-const currentIndex = ref(1)
-const hasClicked = ref(false)
-const loading = ref(false)
-const loadedVideos = ref(0)
-const nextVdRef = ref(null)
+const currentIndex = ref(1);
+const hasClicked = ref(false);
+const loading = ref(false);
+const loadedVideos = ref(0);
+const nextVdRef = ref(null);
 
-const getVideoSrc = (index) => `/videos/hero-${index}.mp4`
+const getVideoSrc = (index) => `/videos/hero-${index}.mp4`;
 
-const requiredLoadedVideos = 1 // 
+const requiredLoadedVideos = 1; //
 
 const handleVideoLoad = () => {
-  loadedVideos.value++
-}
+  loadedVideos.value++;
+};
 
 const handleHeartClick = () => {
-  gsap.to('#next-video', {rotate: 300, duration: 1, ease: 'power1.inOut'})
-}
+  gsap.to("#next-video", { rotate: 300, duration: 1, ease: "power1.inOut" });
+};
 
 watch(loadedVideos, (val) => {
   if (val >= requiredLoadedVideos) {
-    loading.value = false
+    loading.value = false;
   }
-})
+});
 
 watch([hasClicked, currentIndex], () => {
-  if (!hasClicked.value) return
+  if (!hasClicked.value) return;
 
-  gsap.set('#next-video', { visibility: 'visible' })
-  gsap.to('#next-video', {
-    transformOrigin: 'center center',
+  gsap.set("#next-video", { visibility: "visible" });
+  gsap.to("#next-video", {
+    transformOrigin: "center center",
     scale: 1,
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     duration: 1,
-    ease: 'power1.inOut',
+    ease: "power1.inOut",
     onStart: () => nextVdRef.value?.play(),
-  })
-  gsap.from('#current-video', {
-    transformOrigin: 'center center',
+  });
+  gsap.from("#current-video", {
+    transformOrigin: "center center",
     scale: 0,
     duration: 1.5,
-    ease: 'power1.inOut',
-  })
-})
+    ease: "power1.inOut",
+  });
+});
 
 onMounted(() => {
   // 初始化视频帧
-  gsap.set('#video-frame', {
-    clipPath: 'polygon(14% 50%, 72% 0, 88% 90%, 0 65%)',
-    borderRadius: '0% 0% 40% 10%',
-  })
+  gsap.set("#video-frame", {
+    clipPath: "polygon(14% 50%, 72% 0, 88% 90%, 0 65%)",
+    borderRadius: "0% 0% 40% 10%",
+  });
 
   // 动画视频帧
-  gsap.from('#video-frame', {
-    clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-    borderRadius: '0% 0% 0% 0%',
-    ease: 'power1.inOut',
+  gsap.from("#video-frame", {
+    clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+    borderRadius: "0% 0% 0% 0%",
+    ease: "power1.inOut",
     scrollTrigger: {
-      trigger: '#video-frame',
-      start: 'center center',
-      end: 'bottom center',
+      trigger: "#video-frame",
+      start: "center center",
+      end: "bottom center",
       scrub: true,
     },
-  })
-})
+  });
+});
 </script>
