@@ -1,12 +1,12 @@
 <template>
   <div id="about" class="min-h-screen w-screen">
     <div class="relative mb-8 mt-36 flex flex-col items-center gap-5">
-      <p class="font-general text-sm uppercase md:text-[10px]">
-        地下的世界
+      <p class="font-general text-sm uppercase md:text-[14px]">
+        从地下的世界
       </p>
 
       <AnimatedTitle
-        title="开始<br/>生存战略<br /> 和 <b>海边</b>卡夫卡"
+        title="开始<br />生存战略<br /> 和 <b>海边</b>卡夫卡"
         container-class="mt-5 !text-black text-center"
       />
 

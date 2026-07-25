@@ -38,7 +38,7 @@
             </h1>
 
             <p
-              class="mb-5 font-robert-regular text-blue-100 text-left max-w-64"
+              class="mb-5 mt-10 font-robert-regular text-blue-100 text-left max-w-128 px-3"
             >
               每个人都有属于自己的一片森林，<br />迷失的人迷失了，相逢的人会再相逢。
             </p>
@@ -71,6 +71,8 @@ const hasClicked = ref(false);
 const loading = ref(false);
 const loadedVideos = ref(0);
 const nextVdRef = ref(null);
+const isRotated = ref(false);
+const rotateAmount = ref(0);
 
 const getVideoSrc = (index) => `/videos/hero-${index}.mp4`;
 
@@ -81,7 +83,14 @@ const handleVideoLoad = () => {
 };
 
 const handleHeartClick = () => {
-  gsap.to("#next-video", { rotate: 300, duration: 1, ease: "power1.inOut" });
+  isRotated.value = !isRotated.value;
+  // 每次累加正向角度，确保始终顺时针旋转
+  rotateAmount.value += isRotated.value ? 300 : 60;
+  gsap.to("#next-video", {
+    rotate: rotateAmount.value,
+    duration: 1,
+    ease: "power1.inOut",
+  });
 };
 
 watch(loadedVideos, (val) => {

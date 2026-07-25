@@ -12,7 +12,7 @@
         <router-link
           to="/"
           class="flex h-9 w-9 items-center justify-center rounded-full bg-foreground/10 text-foreground transition-colors hover:bg-foreground/20"
-          aria-label="首页"
+          aria-label="homepage"
         >
           <Icon icon="lucide:home" class="h-4 w-4" />
         </router-link>
@@ -106,20 +106,19 @@
             src="/audio/loop.mp3"
             loop
           />
-          <div class="flex items-end gap-[2px] h-4">
-            <div
-              v-for="bar in 4"
-              :key="bar"
-              class="w-[2px] rounded-full transition-all"
-              :class="
-                isIndicatorActive ? 'bg-current animate-pulse' : 'bg-current/40'
-              "
-              :style="{
-                height: `${3 + bar * 3}px`,
-                animationDelay: `${bar * 0.15}s`,
-                animationDuration: '0.6s',
-              }"
-            />
+          <div v-if="isIndicatorActive">
+            <div class="flex items-end gap-[2px] h-4">
+              <div
+                v-for="bar in 4"
+                :key="bar"
+                class="w-[2px] rounded-full transition-all"
+                :class="isIndicatorActive ? 'bg-current animate-pulse' : 'bg-current/40'"
+                :style="{ height: `${3 + bar * 3}px`,animationDelay: `${bar * 0.15}s`,animationDuration: '0.6s',}"
+              />
+            </div>
+          </div>
+          <div v-else>
+            <span>播放</span>
           </div>
         </Button>
 
