@@ -135,9 +135,9 @@
           </SheetTrigger>
           <SheetContent side="right">
             <SheetHeader class="mb-6">
-              <SheetTitle class="special-font font-zentry text-xl"
-                >骑士团长</SheetTitle
-              >
+              <SheetTitle class="special-font font-zentry text-xl">
+                  骑士团长
+              </SheetTitle>
               <SheetDescription>选择你想去的页面</SheetDescription>
             </SheetHeader>
 

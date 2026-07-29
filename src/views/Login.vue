@@ -20,7 +20,7 @@
             <Label for="password">密码</Label>
             <Input id="password" v-model="password" type="password" placeholder="••••••••" required />
           </div>
-          <Button type="submit" :disabled="loading" class="w-full">
+          <Button type="submit" :disabled="loading" class="w-full cursor-pointer select-none">
             {{ loading ? '登录中...' : '登录' }}
           </Button>
         </form>
@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth.js'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card/index.js'
@@ -66,4 +66,8 @@ async function handleLogin() {
     loading.value = false
   }
 }
+
+onMounted(() => {
+  console.log('asd')
+})
 </script>

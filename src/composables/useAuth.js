@@ -1,5 +1,6 @@
 import { reactive, computed, watch } from 'vue'
 import { router } from '@/router/index.js'
+import axios from 'axios'
 
 const TOKEN_KEY = 'awwwards_token'
 const USER_KEY = 'awwwards_user'
@@ -27,42 +28,38 @@ watch(
   { deep: true }
 )
 
-// 通用 API 请求
-async function api(path, options = {}) {
-  const headers = { 'Content-Type': 'application/json' }
+// 创建 axios 实例
+const apiClient = axios.create({
+  baseURL: '/api',
+  headers: { 'Content-Type': 'application/json' },
+  timeout: 10000,
+})
+
+// 请求拦截器：自动附加 JWT token
+apiClient.interceptors.request.use((config) => {
   if (state.token) {
-    headers['Authorization'] = `Bearer ${state.token}`
+    config.headers.Authorization = `Bearer ${state.token}`
   }
+  return config
+})
 
-  let res
-  try {
-    res = await fetch(path, {
-      ...options,
-      headers: { ...headers, ...options.headers },
-    })
-  } catch {
-    throw new Error('无法连接到服务器，请确认后端已启动 (cd server && npm run dev)')
-  }
-
-  let data = {}
-  try {
-    data = await res.json()
-  } catch {
-    if (!res.ok) {
-      throw new Error(`请求失败 (${res.status})`)
-    }
-  }
-
-  if (!res.ok) {
-    if (res.status === 401) {
+// 响应拦截器：统一错误处理 & 401 自动登出
+apiClient.interceptors.response.use(
+  (response) => response.data,
+  (error) => {
+    if (error.response?.status === 401) {
       state.user = null
       state.token = null
     }
-    throw new Error(data.message || `请求失败 (${res.status})`)
-  }
 
-  return data
-}
+    if (!error.response) {
+      // 网络错误（无法连接服务器）
+      throw new Error('无法连接到服务器，请确认后端已启动 (cd server && npm run dev)')
+    }
+
+    throw new Error(error.response.data?.message || `请求失败 (${error.response.status})`)
+  }
+)
 
 export function useAuth() {
   const user = computed(() => state.user)
@@ -71,8 +68,9 @@ export function useAuth() {
   async function restoreSession() {
     if (!state.token) return
     try {
-      const { user: freshUser } = await api('/api/auth/me')
-      state.user = freshUser
+      // 对应 eros: POST /auth/profile (JwtAuthGuard)
+      const profile = await apiClient.post('/auth/profile')
+      state.user = profile
     } catch {
       state.user = null
       state.token = null
@@ -80,22 +78,21 @@ export function useAuth() {
   }
 
   async function login(email, password) {
-    const { user: userData, token } = await api('/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-    })
+    // 对应 eros: POST /auth/login → { access_token, user }
+    const { access_token, user: userData } = await apiClient.post('/auth/login', { email, password })
     state.user = userData
-    state.token = token
+    state.token = access_token
     return userData
   }
 
   async function register(name, email, password) {
-    const { user: userData, token } = await api('/api/auth/register', {
-      method: 'POST',
-      body: JSON.stringify({ name, email, password }),
-    })
+    // 对应 eros: POST /auth/register → { message, user }
+    // eros 注册后不返回 token，所以注册成功后调用 login 自动登录
+    const { user: userData } = await apiClient.post('/auth/register', { name, email, password })
+    // 注册成功后自动登录，获取 token
+    const { access_token } = await apiClient.post('/auth/login', { email, password })
     state.user = userData
-    state.token = token
+    state.token = access_token
     return userData
   }
 
@@ -106,19 +103,15 @@ export function useAuth() {
   }
 
   async function updateProfile(updates) {
-    const { user: userData } = await api('/api/auth/profile', {
-      method: 'PUT',
-      body: JSON.stringify(updates),
-    })
+    // TODO: eros 暂无 PUT /auth/profile 接口，待后端补充
+    const { user: userData } = await apiClient.put('/auth/profile', updates)
     state.user = userData
     return userData
   }
 
   async function changePassword(currentPassword, newPassword) {
-    const data = await api('/api/auth/password', {
-      method: 'PUT',
-      body: JSON.stringify({ currentPassword, newPassword }),
-    })
+    // TODO: eros 暂无 PUT /auth/password 接口，待后端补充
+    const data = await apiClient.put('/auth/password', { currentPassword, newPassword })
     return data
   }
 
