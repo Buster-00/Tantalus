@@ -5,6 +5,8 @@ import About from "@/views/About.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import Profile from "@/views/Profile.vue";
+import MessageBoard from "@/views/MessageBoard.vue";
+import ContactPage from "@/views/ContactPage.vue";
 
 const routes = [
   { path: "/", component: home },
@@ -13,6 +15,8 @@ const routes = [
   { path: "/login", component: Login, meta: { guestOnly: true } },
   { path: "/register", component: Register, meta: { guestOnly: true } },
   { path: "/profile", component: Profile, meta: { requiresAuth: true } },
+  { path: "/board", component: MessageBoard },
+  { path: "/contact", component: ContactPage }
 ];
 
 export const router = createRouter({
@@ -21,7 +25,7 @@ export const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem("awwwards_token");
+  const token = localStorage.getItem("tantalus_token");
 
   if (to.meta.requiresAuth && !token) {
     next("/login");

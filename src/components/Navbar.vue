@@ -239,6 +239,7 @@ const { user, isAuthenticated, logout } = useAuth();
 const navItems = [
   { label: "关于", icon: "lucide:info", to: "/about" },
   { label: "联系", icon: "lucide:mail", to: "/contact" },
+  { label: "留言板", icon: "lucide:message-square", to: "/board" },
 ];
 
 const userInitials = computed(() => {

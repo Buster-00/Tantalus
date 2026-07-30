@@ -26,10 +26,43 @@
         <Button title="再见" container-class="mt-10 cursor-pointer" />
       </div>
     </div>
+
+    <div class="mx-auto mt-16 max-w-2xl text-center">
+      <div class="grid gap-6 sm:grid-cols-3">
+        <div class="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+          <Icon icon="lucide:mail" class="mx-auto mb-3 size-6 text-blue-300" />
+          <p class="font-robert-medium text-sm font-semibold text-white">
+            邮箱
+          </p>
+          <p class="mt-1 font-robert-regular text-xs text-white/60">
+            hello@tantalus.dev
+          </p>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+          <Icon icon="lucide:github" class="mx-auto mb-3 size-6 text-blue-300" />
+          <p class="font-robert-medium text-sm font-semibold text-white">
+            GitHub
+          </p>
+          <p class="mt-1 font-robert-regular text-xs text-white/60">
+            @tantalus
+          </p>
+        </div>
+        <div class="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+          <Icon icon="lucide:message-circle" class="mx-auto mb-3 size-6 text-blue-300" />
+          <p class="font-robert-medium text-sm font-semibold text-white">
+            留言板
+          </p>
+          <p class="mt-1 font-robert-regular text-xs text-white/60">
+            随时给我留言
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 import AnimatedTitle from './AnimatedTitle.vue'
 import Button from './Button.vue'
 import ImageClipBox from './ImageClipBox.vue'

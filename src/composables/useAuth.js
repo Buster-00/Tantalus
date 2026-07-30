@@ -2,8 +2,8 @@ import { reactive, computed, watch } from 'vue'
 import { router } from '@/router/index.js'
 import axios from 'axios'
 
-const TOKEN_KEY = 'awwwards_token'
-const USER_KEY = 'awwwards_user'
+const TOKEN_KEY = 'tantalus_token'
+const USER_KEY = 'tantalus_user'
 
 const state = reactive({
   user: JSON.parse(localStorage.getItem(USER_KEY) || 'null'),

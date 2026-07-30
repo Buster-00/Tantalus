@@ -34,8 +34,8 @@ async function request(path, options = {}) {
   if (!res.ok) {
     // 401 自动清除登录状态
     if (res.status === 401) {
-      localStorage.removeItem('awwwards_token')
-      localStorage.removeItem('awwwards_user')
+      localStorage.removeItem('tantalus_token')
+      localStorage.removeItem('tantalus_user')
       window.location.href = '/login'
     }
     throw new Error(data.message || '请求失败')
