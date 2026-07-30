@@ -1,6 +1,6 @@
 [
   {
-    "label": "启动开发服务器",
+    "label": "启动tantalus开发服务器",
     "command": "npm run dev",
     "env": {
       "NODE_ENV": "development",

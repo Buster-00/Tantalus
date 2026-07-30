@@ -2,7 +2,7 @@
   <div class="relative h-dvh w-screen overflow-x-hidden">
     <div
       v-if="loading"
-      class="flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50"
+      class="flex-center absolute z-[100] h-dvw w-screen overflow-hidden bg-violet-50"
     >
       <div class="three-body">
         <div class="three-body__dot"></div>
@@ -18,7 +18,7 @@
       <div>
         <video
           ref="nextVdRef"
-          :src="getVideoSrc(1)"
+          src="/videos/hero-1.mp4"
           loop
           muted
           autoplay
@@ -66,21 +66,15 @@ import Button from "./Button.vue";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const currentIndex = ref(1);
 const hasClicked = ref(false);
-const loading = ref(false);
-const loadedVideos = ref(0);
+const loading = ref(true);
 const nextVdRef = ref(null);
 const isRotated = ref(false);
 const rotateAmount = ref(0);
 
-const getVideoSrc = (index) => `/videos/hero-${index}.mp4`;
-
-const requiredLoadedVideos = 1; //
-
-const handleVideoLoad = () => {
-  loadedVideos.value++;
-};
+function handleVideoLoad() {
+  loading.value = false;
+}
 
 const handleHeartClick = () => {
   isRotated.value = !isRotated.value;
@@ -93,14 +87,8 @@ const handleHeartClick = () => {
   });
 };
 
-watch(loadedVideos, (val) => {
-  if (val >= requiredLoadedVideos) {
-    loading.value = false;
-  }
-});
-
-watch([hasClicked, currentIndex], () => {
-  if (!hasClicked.value) return;
+watch(hasClicked, (val) => {
+  if (!val) return;
 
   gsap.set("#next-video", { visibility: "visible" });
   gsap.to("#next-video", {
