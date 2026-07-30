@@ -34,6 +34,17 @@
       <div class="flex items-center gap-2">
         <!-- Auth: Desktop -->
         <template v-if="isAuthenticated">
+          <!-- 发布新内容 -->
+          <Button
+            size="icon"
+            as-child
+            class="hidden md:inline-flex rounded-full bg-black text-white hover:bg-black/80"
+          >
+            <router-link to="/posts/new" aria-label="发布新内容">
+              <Icon icon="lucide:plus" class="size-5" />
+            </router-link>
+          </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
               <Button
@@ -167,6 +178,13 @@
                 </p>
                 <template v-if="isAuthenticated">
                   <router-link
+                    to="/posts/new"
+                    class="flex items-center gap-2 rounded-md px-2 py-2 text-sm transition-colors hover:bg-accent"
+                  >
+                    <Icon icon="lucide:plus" class="h-4 w-4" />
+                    发布新内容
+                  </router-link>
+                  <router-link
                     to="/profile"
                     class="flex items-center gap-2 rounded-md px-2 py-2 text-sm transition-colors hover:bg-accent"
                   >
@@ -237,9 +255,10 @@ import {
 const { user, isAuthenticated, logout } = useAuth();
 
 const navItems = [
+  { label: "帖子", icon: "lucide:file-text", to: "/posts" },
+  { label: "留言板", icon: "lucide:message-square", to: "/board" },
   { label: "关于", icon: "lucide:info", to: "/about" },
   { label: "联系", icon: "lucide:mail", to: "/contact" },
-  { label: "留言板", icon: "lucide:message-square", to: "/board" },
 ];
 
 const userInitials = computed(() => {
